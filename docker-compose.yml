@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  nginx:
+    build: ./nginx
+    container_name: nginx-proxy
+    depends_on:
+      - springboot
+    ports:
+      - "9000:80"
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: db
+    environment:
+      POSTGRES_DB: parcel
+      POSTGRES_USER: berk
+      POSTGRES_PASSWORD: 123456
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: elestio/pgadmin:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: example@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: password123
+      PGADMIN_LISTEN_PORT: 8080
+    ports:
+      - "9001:8080"
+
+  springboot:
+    build:
+      dockerfile: Dockerfile
+    container_name: springboot-app
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+
+
+volumes:
+  postgres-data:
