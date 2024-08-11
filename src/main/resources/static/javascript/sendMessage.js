@@ -1,7 +1,7 @@
 const trackingNumber = document.getElementById('id').textContent.split(': ')[1];
 const echo = document.querySelector('.chat-container');
 
-const ws = new WebSocket("ws://mivs13.gm.fh-koeln.de:8080/chat?trackingNumber=" + encodeURIComponent(trackingNumber));
+const ws = new WebSocket("ws://localhost:8080/chat?trackingNumber=" + encodeURIComponent(trackingNumber));
 
 ws.onmessage = function (message) {
     console.log("message: " + message.data)
